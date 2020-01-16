@@ -2,41 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogLead : MonoBehaviour
+public class PlugWire : MonoBehaviour
 {
     public Transform man;
-    public Transform dog;
-    private LineRenderer leadLine;
+    public Transform plug;
+    private LineRenderer plugLine;
     public int maxDistance;
     private float currentDistance;
 
     void Start()
     {
-        leadLine = GetComponent<LineRenderer>();
+        plugLine = GetComponent<LineRenderer>();
     }
 
     void Update()
     {
-        currentDistance = Vector3.Distance(man.position, dog.position);
+        currentDistance = Vector3.Distance(man.position, plug.position);
 
-        for (int i = 0; i < leadLine.positionCount; i++)
+        for (int i = 0; i < plugLine.positionCount; i++)
         {
             if (i == 0)
             {
-                leadLine.SetPosition(i , man.position);
+                plugLine.SetPosition(i , man.position);
             }
 
-            else if (i + 1 == leadLine.positionCount)
+            else if (i + 1 == plugLine.positionCount)
             {
-                leadLine.SetPosition(i, dog.position);
+                plugLine.SetPosition(i, plug.position);
             }
 
             else
             {
                 float position = i;               
-                float point = position / leadLine.positionCount;
+                float point = position / plugLine.positionCount;
 
-                int centerPos = Mathf.FloorToInt((leadLine.positionCount + 1) / 2);
+                int centerPos = Mathf.FloorToInt((plugLine.positionCount + 1) / 2);
                 int centerDist = Mathf.FloorToInt(Mathf.Sqrt(Mathf.Pow(centerPos - (i + 1), 2)));
                 float sag = ((maxDistance - currentDistance) / 5 - (Mathf.Pow(centerDist , 2) * ((maxDistance - currentDistance) / 100)));
                 
@@ -45,10 +45,10 @@ public class DogLead : MonoBehaviour
                     sag = 0;
                 }
 
-                Vector3 newPos = new Vector3(man.position.x - ((man.position.x - dog.position.x) * point),
-                                             man.position.y - (man.position.y - dog.position.y) - sag,
-                                             man.position.z - ((man.position.z - dog.position.z) * point));
-                leadLine.SetPosition(i, newPos);
+                Vector3 newPos = new Vector3(man.position.x - ((man.position.x - plug.position.x) * point),
+                                             man.position.y - (man.position.y - plug.position.y) - sag,
+                                             man.position.z - ((man.position.z - plug.position.z) * point));
+                plugLine.SetPosition(i, newPos);
             }
         }        
     }
