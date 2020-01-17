@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Spawn();
     }
 
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN.");
@@ -42,7 +43,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void Spawn()
     {
         GameObject currentPlayer = (GameObject)PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
+        currentPlayer.GetComponentInChildren<CharacterController>().enabled = true;
         currentPlayer.GetComponentInChildren<PlayerMove>().enabled = true;
-        currentPlayer.transform.Find("Camera").gameObject.SetActive(true);
+
+        GameObject currCam = currentPlayer.transform.Find("PlayerCamera").gameObject;
+        currCam.SetActive(true);
+        currCam.GetComponentInChildren<Camera>().enabled = true;
+        currCam.GetComponentInChildren<PlayerLook>().enabled = true;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerMove : MonoBehaviour
 {
     //Inputs and movement speed, should be touched only in the unity editor.
@@ -38,11 +39,6 @@ public class PlayerMove : MonoBehaviour
         charController.SimpleMove(forwardMovement + rightMovement);
 
         JumpInput();
-        if ((horizInput != 0 || vertInput != 0) && !isJumping)
-        {
-            //Walking
-        }
-
     }
 
     private void JumpInput()
