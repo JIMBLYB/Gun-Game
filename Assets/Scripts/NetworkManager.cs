@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+
+    [SerializeField]
+    private Camera sceneCamera;
+    private Camera m_Camera;
+
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +19,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Connect()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
         Spawn();
     }
@@ -42,13 +49,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void Spawn()
     {
-        GameObject currentPlayer = (GameObject)PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
-        currentPlayer.GetComponentInChildren<CharacterController>().enabled = true;
-        currentPlayer.GetComponentInChildren<PlayerMove>().enabled = true;
-
-        GameObject currCam = currentPlayer.transform.Find("PlayerCamera").gameObject;
-        currCam.SetActive(true);
-        currCam.GetComponentInChildren<Camera>().enabled = true;
-        currCam.GetComponentInChildren<PlayerLook>().enabled = true;
+        GameObject player = (GameObject)PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
+        player.GetComponentInChildren<CharacterController>().enabled = true;
+        player.GetComponentInChildren<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+        player.transform.Find("Camera").gameObject.SetActive(true);
+        player.GetComponentInChildren<AudioListener>().enabled = true;
+        sceneCamera.enabled = false;
     }
 }

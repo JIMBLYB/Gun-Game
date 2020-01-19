@@ -3,17 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class NetworkCharacter : MonoBehaviourPunCallbacks
+public class NetworkCharacter : MonoBehaviourPunCallbacks, IPunObservable
 {
 
-    Vector3 realPosition = Vector3.zero;
-    Quaternion realRotation = Quaternion.identity;
+    private Vector3 position;
+    private Quaternion rotation;
+    private float smoothing = 10.0f;
 
+    [SerializeField]
+    private GameObject cameraObject;
+    [SerializeField]
+    private GameObject playerObject;
+    void Awake()
+    {
+        Debug.Log("Awake!");
+        if (photonView.IsMine)
+        {
+            Debug.Log("It is mine");
+            cameraObject.SetActive(true);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        if (photonView.IsMine)
+        {
+        }
+        else
+        {
+            position = transform.position;
+            rotation = transform.rotation;
+        }
     }
 
     // Update is called once per frame
@@ -21,24 +42,13 @@ public class NetworkCharacter : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine)
         {
-            transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
+            transform.position = Vector3.Lerp(transform.position, position, Time.deltaTime * smoothing);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * smoothing);
         }
     }
 
-    public override void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    public override void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Debug.Log("There's 2 or more players in the scene!");
-
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
@@ -46,8 +56,8 @@ public class NetworkCharacter : MonoBehaviourPunCallbacks
         }
         else
         {
-            realPosition = (Vector3)stream.ReceiveNext();
-            realRotation = (Quaternion)stream.ReceiveNext();
+            position = (Vector3)stream.ReceiveNext();
+            rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }
