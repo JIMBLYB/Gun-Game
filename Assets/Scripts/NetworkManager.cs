@@ -1,59 +1,162 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
 
     [SerializeField]
+    private Text connectionText;
+    [SerializeField]
+    private Transform[] spawnPoints;
+    [SerializeField]
     private Camera sceneCamera;
-    private Camera m_Camera;
+    [SerializeField]
+    private GameObject[] playerModel;
+    [SerializeField]
+    private GameObject serverWindow;
+    [SerializeField]
+    //private GameObject messageWindow;
+    //[SerializeField]
+    //private GameObject sightImage;
+    //[SerializeField]
+    private InputField username;
+    [SerializeField]
+    private InputField roomName;
+    [SerializeField]
+    private InputField roomList;
+    //[SerializeField]
+    //private InputField messagesLog;
 
     private GameObject player;
-    // Start is called before the first frame update
+    private Queue<string> messages;
+    private const int messageCount = 10;
+    private string nickNamePrefKey = "PlayerName";
+
     void Start()
     {
-        Connect();
-    }
-
-    void Connect()
-    {
+        messages = new Queue<string>(messageCount);
+        if (PlayerPrefs.HasKey(nickNamePrefKey))
+        {
+            username.text = PlayerPrefs.GetString(nickNamePrefKey);
+        }
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
-        Spawn();
+        connectionText.text = "Connecting to lobby...";
     }
-
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("OnConnectedToMaster() was called by PUN.");
-        PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinLobby();
     }
 
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.Log("Failed to join random room.");
-        PhotonNetwork.CreateRoom("New Room", new Photon.Realtime.RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 5 });
+        connectionText.text = cause.ToString();
     }
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnJoinedLobby()
     {
-        Debug.Log("Room with name exists.");
+        serverWindow.SetActive(true);
+        connectionText.text = "";
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> rooms)
+    {
+        roomList.text = "";
+        foreach (RoomInfo room in rooms)
+        {
+            roomList.text += room.Name + "\n";
+        }
+    }
+
+    public void JoinRoom()
+    {
+        serverWindow.SetActive(false);
+        connectionText.text = "Joining room...";
+        PhotonNetwork.LocalPlayer.NickName = username.text;
+        PlayerPrefs.SetString(nickNamePrefKey, username.text);
+        RoomOptions roomOptions = new RoomOptions()
+        {
+            IsVisible = true,
+            MaxPlayers = 8
+        };
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            PhotonNetwork.JoinOrCreateRoom(roomName.text, roomOptions, TypedLobby.Default);
+        }
+        else
+        {
+            connectionText.text = "PhotonNetwork connection is not ready, try restart it.";
+        }
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Nice.");
+        connectionText.text = "";
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Respawn(0.0f);
     }
 
-    public void Spawn()
+    void Respawn(float spawnTime)
     {
-        GameObject player = (GameObject)PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
-        player.GetComponentInChildren<CharacterController>().enabled = true;
-        player.GetComponentInChildren<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-        player.transform.Find("Camera").gameObject.SetActive(true);
-        player.GetComponentInChildren<AudioListener>().enabled = true;
-        sceneCamera.enabled = false;
+        //sightImage.SetActive(false);
+        sceneCamera.enabled = true;
+        StartCoroutine(RespawnCoroutine(spawnTime));
     }
+
+    IEnumerator RespawnCoroutine(float spawnTime)
+    {
+        yield return new WaitForSeconds(spawnTime);
+        //messageWindow.SetActive(true);
+        //sightImage.SetActive(true);
+        int playerIndex = Random.Range(0, playerModel.Length);
+        int spawnIndex = Random.Range(0, spawnPoints.Length);
+        player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        playerHealth.RespawnEvent += Respawn;
+        playerHealth.AddMessageEvent += AddMessage;
+        sceneCamera.enabled = false;
+        if (spawnTime == 0)
+        {
+            AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Joined Game.");
+        }
+        else
+        {
+            AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Respawned.");
+        }
+    }
+    void AddMessage(string message)
+    {
+        photonView.RPC("AddMessage_RPC", RpcTarget.All, message);
+    }
+
+    [PunRPC]
+    void AddMessage_RPC(string message)
+    {
+        Debug.Log("Message log : " + message);
+        //messages.Enqueue(message);
+        //if (messages.Count > messageCount)
+        //{
+        //    messages.Dequeue();
+        //}
+        //messagesLog.text = "";
+        //foreach (string m in messages)
+        //{
+        //    messagesLog.text += m + "\n";
+        //}
+    }
+
+    public override void OnPlayerLeftRoom(Player other)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            AddMessage("Player " + other.NickName + " Left Game.");
+        }
+    }
+
 }

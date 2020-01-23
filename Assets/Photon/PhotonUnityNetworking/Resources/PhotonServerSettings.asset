@@ -31,5 +31,9 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - AddMessage_RPC
+  - Death
+  - SetName
+  - TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
