@@ -76,6 +76,7 @@ public class NetworkCharacter : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
+        //Smooths out network position.
         if (!photonView.IsMine)
         {
             transform.position = Vector3.Lerp(transform.position, position, Time.deltaTime * smoothing);

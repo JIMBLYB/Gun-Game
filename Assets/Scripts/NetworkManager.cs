@@ -38,6 +38,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        //Sets username and keeps count of the messages sent
         messages = new Queue<string>(messageCount);
         if (PlayerPrefs.HasKey(nickNamePrefKey))
         {
@@ -50,22 +51,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        //Connects to the main Photon Server
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
+        //Sets the connectionText label to the cause of the disconnect
         connectionText.text = cause.ToString();
     }
 
     public override void OnJoinedLobby()
     {
+        //Displays the Lobby panel once connected to master
         serverWindow.SetActive(true);
         connectionText.text = "";
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> rooms)
     {
+        //refreshes the list of rooms
         roomList.text = "";
         foreach (RoomInfo room in rooms)
         {
@@ -75,6 +80,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
+        //hides the lobby panel and jonis a room
         serverWindow.SetActive(false);
         connectionText.text = "Joining room...";
         PhotonNetwork.LocalPlayer.NickName = username.text;
@@ -82,7 +88,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions()
         {
             IsVisible = true,
-            MaxPlayers = 8
+            MaxPlayers = 5
         };
         if (PhotonNetwork.IsConnectedAndReady)
         {
@@ -111,6 +117,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     IEnumerator RespawnCoroutine(float spawnTime)
     {
+
+        //Respawn Coroutine
         yield return new WaitForSeconds(spawnTime);
         //messageWindow.SetActive(true);
         //sightImage.SetActive(true);
@@ -138,6 +146,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void AddMessage_RPC(string message)
     {
+        //Simple message log, currently just in the console, soon to be a chat.
         Debug.Log("Message log : " + message);
         //messages.Enqueue(message);
         //if (messages.Count > messageCount)
