@@ -19,8 +19,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject serverWindow;
     [SerializeField]
-    //private GameObject messageWindow;
-    //[SerializeField]
+    private GameObject messageWindow;
+    [SerializeField]
     //private GameObject sightImage;
     //[SerializeField]
     private InputField username;
@@ -28,8 +28,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private InputField roomName;
     [SerializeField]
     private InputField roomList;
-    //[SerializeField]
-    //private InputField messagesLog;
+    [SerializeField]
+    private InputField messagesLog;
 
     private GameObject player;
     private Queue<string> messages;
@@ -120,7 +120,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //Respawn Coroutine
         yield return new WaitForSeconds(spawnTime);
-        //messageWindow.SetActive(true);
+        messageWindow.SetActive(true);
         //sightImage.SetActive(true);
         int playerIndex = Random.Range(0, playerModel.Length);
         int spawnIndex = Random.Range(0, spawnPoints.Length);
@@ -148,16 +148,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         //Simple message log, currently just in the console, soon to be a chat.
         Debug.Log("Message log : " + message);
-        //messages.Enqueue(message);
-        //if (messages.Count > messageCount)
-        //{
-        //    messages.Dequeue();
-        //}
-        //messagesLog.text = "";
-        //foreach (string m in messages)
-        //{
-        //    messagesLog.text += m + "\n";
-        //}
+        messages.Enqueue(message);
+        if (messages.Count > messageCount)
+        {
+            messages.Dequeue();
+        }
+        messagesLog.text = "";
+        foreach (string m in messages)
+        {
+            messagesLog.text += m + "\n";
+        }
     }
 
     public override void OnPlayerLeftRoom(Player other)
