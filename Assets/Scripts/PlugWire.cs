@@ -8,7 +8,7 @@ public class PlugWire : MonoBehaviour
     public Transform plug;
     private LineRenderer plugLine;
     public int maxDistance;
-    private float currentDistance;
+    public float currentDistance;
 
     void Start()
     {
