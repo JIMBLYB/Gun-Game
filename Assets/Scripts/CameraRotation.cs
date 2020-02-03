@@ -4,14 +4,14 @@ public class CameraRotation : MonoBehaviour
 {
 
     [SerializeField]
-    private Transform lookPoint;
+    private Transform lookatPoint;
     [SerializeField]
     private float rotateSpeed = 12f;
 
     void Update()
     {
-        transform.RotateAround(lookPoint.position, Vector3.up, rotateSpeed * Time.deltaTime);
-        transform.LookAt(lookPoint, Vector3.up);
+        transform.RotateAround(lookatPoint.position, Vector3.up, rotateSpeed * Time.deltaTime);
+        transform.LookAt(lookatPoint, Vector3.up);
     }
 
 }
