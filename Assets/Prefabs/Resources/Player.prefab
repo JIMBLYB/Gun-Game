@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 7913927288441766097}
   - component: {fileID: 7592006948491172592}
   - component: {fileID: 6153464541210322836}
+  - component: {fileID: 9094212270877128578}
   - component: {fileID: 7913413406956890096}
   - component: {fileID: 1655193064142687500}
   - component: {fileID: 6824580954966239225}
@@ -511,6 +512,20 @@ MonoBehaviour:
   currentPlug: {fileID: 0}
   highlightToggle: 0
   plugAttached: 0
+--- !u!114 &9094212270877128578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913927288441766103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c5cdb9fe4856f74ea22d3ef30b6937d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plugWire: {fileID: 6153464541210322836}
+  grappleShotKey: 101
 --- !u!82 &7913413406956890096
 AudioSource:
   m_ObjectHideFlags: 0

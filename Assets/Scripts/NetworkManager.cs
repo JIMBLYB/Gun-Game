@@ -29,8 +29,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private InputField roomList;
     [SerializeField]
-    private InputField messagesLog;
-
+    private InputField messagesLog;    
     private GameObject player;
     private Queue<string> messages;
     private const int messageCount = 10;
@@ -125,12 +124,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         int playerIndex = Random.Range(0, playerModel.Length);
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
+
+        // Scripts to run to the network
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         PlugWire plugWire = player.GetComponent<PlugWire>();
-        playerHealth.enabled = true;
+        Grapple grapple = player.GetComponent<Grapple>();
+
+        // Enabling networking on the scripts
+        playerHealth.enabled = true;     
+        plugWire.enabled = true;       
+        grapple.enabled = true;
+
         playerHealth.RespawnEvent += Respawn;
         playerHealth.AddMessageEvent += AddMessage;
-        plugWire.enabled = true;
+        
         sceneCamera.enabled = false;
         if (spawnTime == 0)
         {
