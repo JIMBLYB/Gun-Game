@@ -525,6 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plugWire: {fileID: 6153464541210322836}
+  lineRenderer: {fileID: 8775045075137920807}
   grappleShotKey: 101
   grappleMaxDistance: 50
 --- !u!82 &7913413406956890096

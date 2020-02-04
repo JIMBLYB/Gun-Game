@@ -6,7 +6,7 @@ public class PlugWire : MonoBehaviour
 {
     public Transform man;
     public Transform plug;
-    private LineRenderer plugLine;
+    public LineRenderer plugLine;
     public float maxDistance;
     public float currentDistance;
     public float rayDistance;
