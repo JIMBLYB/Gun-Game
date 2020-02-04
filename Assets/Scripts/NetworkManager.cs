@@ -126,8 +126,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         int spawnIndex = Random.Range(0, spawnPoints.Length);
         player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        PlugWire plugWire = player.GetComponent<PlugWire>();
+        playerHealth.enabled = true;
         playerHealth.RespawnEvent += Respawn;
         playerHealth.AddMessageEvent += AddMessage;
+        plugWire.enabled = true;
         sceneCamera.enabled = false;
         if (spawnTime == 0)
         {
