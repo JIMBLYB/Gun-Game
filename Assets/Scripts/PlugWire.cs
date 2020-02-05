@@ -15,7 +15,7 @@ public class PlugWire : MonoBehaviour
     public bool highlightToggle;
     public bool plugAttached;
 
-    void Start()
+    private void Start()
     {
         plugLine = GetComponent<LineRenderer>();
     }
@@ -66,10 +66,19 @@ public class PlugWire : MonoBehaviour
         }
     }
 
+    private void CurvePlug()
+    {
+        if (plugAttached == true && currentDistance >= maxDistance)
+        {
+            
+        }
+    }
+
     void Update()
     {
         GetPlug();
         AttachPlugLead();
         DetachPlugLead();
+        CurvePlug();
     }
 }
