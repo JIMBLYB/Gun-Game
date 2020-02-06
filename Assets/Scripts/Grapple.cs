@@ -91,10 +91,10 @@ public class Grapple : MonoBehaviour
         if (!Input.GetKey(reelInKey))
         {
             StopCoroutine(reelIE);
+            yield break;
         }
 
-        Debug.Log("Test");
-        plugWire.man.GetComponent<Rigidbody>().AddForce(reelDirection / 10 * reelSpeed);
+        plugWire.man.transform.position = new Vector3(10, 10, 10);
 
         yield return new WaitForFixedUpdate();
         reelIE = StartCoroutine(WirePull());
