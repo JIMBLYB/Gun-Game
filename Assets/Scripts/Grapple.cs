@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 [RequireComponent(typeof(PlugWire))]
 public class Grapple : MonoBehaviour
 {
     [Header("Component References")]
+
     [SerializeField]
     private PlugWire plugWire;
+    [SerializeField]
+    private FirstPersonController firstPersonController;
+
     [SerializeField]
     private LineRenderer lineRenderer;
 
@@ -33,10 +38,10 @@ public class Grapple : MonoBehaviour
     [SerializeField]
     public bool grappleFired = false;
 
-    [Range(0, 10)]
+    [Range(0, 1000)]
     [SerializeField]
-    private int reelSpeed;
-    private Vector3 reelDirection;
+    private float reelSpeedDivisor;
+    private Vector3 reelDestination;
 
     [Range(0f, 10f)]
     [SerializeField]
@@ -62,7 +67,7 @@ public class Grapple : MonoBehaviour
 
         if (Input.GetKeyDown(reelInKey) && grappleFired)
         {
-            reelDirection = hit.point - plugWire.man.position;
+            reelDestination = hit.point - plugWire.man.position;
             reelIE = StartCoroutine(WirePull());
         }
     }
@@ -88,13 +93,18 @@ public class Grapple : MonoBehaviour
 
     private IEnumerator WirePull()
     {
+        plugWire.man.GetComponent<Rigidbody>().useGravity = false;
         if (!Input.GetKey(reelInKey))
         {
             StopCoroutine(reelIE);
+            plugWire.man.GetComponent<Rigidbody>().useGravity = true;
             yield break;
         }
 
-        plugWire.man.transform.position = new Vector3(10, 10, 10);
+        if (plugWire.man.transform.position != hit.point)
+        {
+            plugWire.man.GetComponent<CharacterController>().Move(reelDestination / reelSpeedDivisor);
+        }
 
         yield return new WaitForFixedUpdate();
         reelIE = StartCoroutine(WirePull());

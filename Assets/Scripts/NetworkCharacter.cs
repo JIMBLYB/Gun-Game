@@ -20,7 +20,7 @@ public class NetworkCharacter : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private NameTag nameTag;
 
-    private Vector3 position;
+    public Vector3 position;
     private Quaternion rotation;
     private bool jump;
     private float smoothing = 10.0f;

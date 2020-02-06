@@ -491,6 +491,8 @@ MonoBehaviour:
   m_FootstepSounds: []
   m_JumpSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
   m_LandSound: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
+  m_MoveDir: {x: 0, y: 0, z: 0}
+  desiredMove: {x: 0, y: 0, z: 0}
 --- !u!114 &6153464541210322836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,12 +529,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plugWire: {fileID: 6153464541210322836}
+  firstPersonController: {fileID: 7592006948491172592}
   lineRenderer: {fileID: 8775045075137920807}
   grappleShotKey: 101
   reelInKey: 114
   grappleMaxDistance: 50
   grappleFired: 0
-  reelSpeed: 10
+  reelDivisor: 100
   grappleCooldown: 0.3
   grappleTimer: 0
 --- !u!82 &7913413406956890096
@@ -707,6 +710,7 @@ MonoBehaviour:
   cameraObject: {fileID: 8136393267529946815}
   playerObject: {fileID: 7913927288441766103}
   nameTag: {fileID: 7316478941880947493}
+  position: {x: 0, y: 0, z: 0}
 --- !u!120 &8775045075137920807
 LineRenderer:
   m_ObjectHideFlags: 0
