@@ -38,9 +38,9 @@ public class Grapple : MonoBehaviour
     [SerializeField]
     public bool grappleFired = false;
 
-    [Range(0, 1000)]
+    [Range(1, 50)]
     [SerializeField]
-    private float reelSpeedDivisor;
+    private int reelSpeedDivisor;
     private Vector3 reelDestination;
 
     [Range(0f, 10f)]

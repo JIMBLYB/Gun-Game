@@ -535,7 +535,7 @@ MonoBehaviour:
   reelInKey: 114
   grappleMaxDistance: 50
   grappleFired: 0
-  reelDivisor: 100
+  reelSpeedDivisor: 25
   grappleCooldown: 0.3
   grappleTimer: 0
 --- !u!82 &7913413406956890096
