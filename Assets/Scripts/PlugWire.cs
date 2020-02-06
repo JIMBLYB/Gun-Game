@@ -15,6 +15,9 @@ public class PlugWire : MonoBehaviour
     public bool highlightToggle;
     public bool plugAttached;
 
+    [SerializeField]
+    private Grapple grapple;
+
     private void Start()
     {
         plugLine = GetComponent<LineRenderer>();
@@ -47,7 +50,7 @@ public class PlugWire : MonoBehaviour
 
     private void AttachPlugLead()
     {
-        if (plugAttached == true)
+        if (plugAttached == true && !grapple.grappleFired)
         {
             plugLine.enabled = true;
             man.GetComponent<Renderer>().enabled = true;

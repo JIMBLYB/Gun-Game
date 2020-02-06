@@ -513,6 +513,7 @@ MonoBehaviour:
   currentPlug: {fileID: 0}
   highlightToggle: 0
   plugAttached: 0
+  grapple: {fileID: 9094212270877128578}
 --- !u!114 &9094212270877128578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,6 +531,8 @@ MonoBehaviour:
   grappleShotKey: 101
   grappleMaxDistance: 50
   grappleFired: 0
+  grappleCooldown: 0.3
+  grappleTimer: 0
 --- !u!82 &7913413406956890096
 AudioSource:
   m_ObjectHideFlags: 0

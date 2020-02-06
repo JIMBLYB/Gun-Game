@@ -22,26 +22,29 @@ public class Grapple : MonoBehaviour
 
     [Header("Debugging")]
     [SerializeField]
-    private bool grappleFired = false;
+    public bool grappleFired = false;
+    private Coroutine grappleIE;
+    [Range(0f, 10f)]
+    [SerializeField]
+    private float grappleCooldown;
+    [SerializeField]
+    private float grappleTimer;
 
     private void Update()
     {
-        if (Input.GetKeyDown(grappleShotKey) && !plugWire.plugAttached)
+        if (Input.GetKeyDown(grappleShotKey) && !plugWire.plugAttached && (grappleTimer + grappleCooldown) < Time.time)
         {
+            grappleTimer = Time.time;
             plugWire.plugAttached = true;
             grappleFired = true;
-            Debug.Log("Shot");
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, grappleMaxDistance))
             {
-                print("Hit");
-                StartCoroutine(WireMoving(hit));
+                grappleIE = StartCoroutine(WireMoving(hit));
             }
-        }
-        else if (Input.GetKeyDown(grappleShotKey) && plugWire.plugAttached && grappleFired == false)
-        {
-            StopCoroutine("WireMoving()");
         }
     }
 
@@ -50,7 +53,16 @@ public class Grapple : MonoBehaviour
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, plugWire.man.position);
         lineRenderer.SetPosition(1, hit.point);
+        
         yield return new WaitForFixedUpdate();
-        StartCoroutine(WireMoving(hit));
+        grappleIE = StartCoroutine(WireMoving(hit));
+        if (Input.GetKeyDown(grappleShotKey) && plugWire.plugAttached && (grappleTimer + grappleCooldown) < Time.time)
+        {
+            grappleTimer = Time.time;
+            plugWire.plugAttached = false;
+            grappleFired = false;
+            lineRenderer.enabled = false;
+            StopCoroutine(grappleIE);
+        }
     }
 }
