@@ -376,18 +376,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7913927288441766103}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05ec5cf00ca181d45a42ba1870e148c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IsWalking: 0
-  m_WalkSpeed: 0
-  m_RunSpeed: 0
-  m_RunstepLenghten: 0
-  m_JumpSpeed: 0
-  m_StickToGroundForce: 0
-  m_GravityMultiplier: 0
+  m_IsWalking: 1
+  m_WalkSpeed: 10
+  m_RunSpeed: 15
+  m_RunstepLenghten: 1
+  m_JumpSpeed: 4
+  m_StickToGroundForce: 1
+  m_GravityMultiplier: 1
   m_MouseLook:
     XSensitivity: 2
     YSensitivity: 2
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_UseFovKick: 0
   m_FovKick:
     Camera: {fileID: 0}
-    originalFov: 0
+    originalFov: 60
     FOVIncrease: 3
     TimeToIncrease: 1
     TimeToDecrease: 1
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_FootstepSounds: []
   m_JumpSound: {fileID: 0}
   m_LandSound: {fileID: 0}
-  m_MoveDir: {x: 0, y: 0, z: 0}
+  m_MoveDir: {x: 0, y: -1, z: 0}
   desiredMove: {x: 0, y: 0, z: 0}
 --- !u!114 &6153464541210322836
 MonoBehaviour:

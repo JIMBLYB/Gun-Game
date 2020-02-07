@@ -67,7 +67,6 @@ public class Grapple : MonoBehaviour
 
         if (Input.GetKeyDown(reelInKey) && grappleFired)
         {
-            reelDestination = hit.point - plugWire.man.position;
             reelIE = StartCoroutine(WirePull());
         }
     }
@@ -103,6 +102,7 @@ public class Grapple : MonoBehaviour
 
         if (plugWire.man.transform.position != hit.point)
         {
+            reelDestination = hit.point - plugWire.man.position;
             plugWire.man.GetComponent<CharacterController>().Move(reelDestination / reelSpeedDivisor);
         }
 
