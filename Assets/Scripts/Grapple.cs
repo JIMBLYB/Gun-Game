@@ -99,9 +99,11 @@ public class Grapple : MonoBehaviour
 
     private IEnumerator WirePull()
     {
+        firstPersonController.enabled = false;
         plugWire.man.GetComponent<Rigidbody>().useGravity = false;
         if (!Input.GetKey(reelInKey))
         {
+            firstPersonController.enabled = true;
             StopCoroutine(reelIE);
             plugWire.man.GetComponent<Rigidbody>().useGravity = true;
             yield break;
