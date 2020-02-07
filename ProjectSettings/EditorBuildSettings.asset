@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JamesTestScene.unity
     guid: 2bbe24d47f001ea45a62105365bc207d
+  - enabled: 1
+    path: Assets/Scenes/MovementTestScenes.unity
+    guid: bb366afd06ebde042b496c1440fde45a
+  - enabled: 1
+    path: Assets/Scenes/NewKalvinTestScene.unity
+    guid: 3368fa9aae8c0fd418bb4dc944932754
   m_configObjects: {}

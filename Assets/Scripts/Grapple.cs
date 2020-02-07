@@ -25,7 +25,7 @@ public class Grapple : MonoBehaviour
 
     [Header("Grapple Settings")]
 
-    [Range(0, 50)]
+    [Range(0, 1000)]
     [SerializeField]
     private float grappleMaxDistance;
 
@@ -33,14 +33,15 @@ public class Grapple : MonoBehaviour
 
     private Coroutine grappleIE;
     private Coroutine reelIE;
+    [SerializeField]
     private RaycastHit hit;
 
     [SerializeField]
     public bool grappleFired = false;
 
-    [Range(1, 50)]
+    [Range(1, 500)]
     [SerializeField]
-    private int reelSpeedDivisor;
+    private int reelSpeed;
     private Vector3 reelDestination;
 
     [Range(0f, 10f)]
@@ -49,20 +50,26 @@ public class Grapple : MonoBehaviour
     [SerializeField]
     private float grappleTimer;
 
+    // Button Inputs
     private void Update()
     {
         if (Input.GetKeyDown(grappleShotKey) && !plugWire.plugAttached && (grappleTimer + grappleCooldown) < Time.time)
         {
-            grappleTimer = Time.time;
-            plugWire.plugAttached = true;
-            grappleFired = true;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             if (Physics.Raycast(ray, out hit, grappleMaxDistance))
             {
+                grappleTimer = Time.time;
+                plugWire.plugAttached = true;
+                grappleFired = true;
+
                 grappleIE = StartCoroutine(WireMoving());
             }
+        }
+        else
+        {
+            plugWire.plugAttached = false;
+            grappleFired = false;
         }
 
         if (Input.GetKeyDown(reelInKey) && grappleFired)
@@ -103,7 +110,9 @@ public class Grapple : MonoBehaviour
         if (plugWire.man.transform.position != hit.point)
         {
             reelDestination = hit.point - plugWire.man.position;
-            plugWire.man.GetComponent<CharacterController>().Move(reelDestination / reelSpeedDivisor);
+            reelDestination = (reelDestination / 10000) * reelSpeed;
+
+            plugWire.man.GetComponent<CharacterController>().Move(reelDestination);
         }
 
         yield return new WaitForFixedUpdate();
