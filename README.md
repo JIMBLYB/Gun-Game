@@ -1,4 +1,4 @@
-# Gun-Plugged
+# Un-named Secret Game
 ## Contributors
 ### Writers
 - Carlos Monesinos-Gonzalez
