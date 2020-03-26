@@ -10,7 +10,7 @@
 - Kalvin Malloch
 - Aleksandar Hristov
 ### Artists/Modellers
-- Josh Walton
+- Daniel Burden
 - Owain Hall
 ### Animators
 - Kat Callaghan
